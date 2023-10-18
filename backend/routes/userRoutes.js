@@ -12,7 +12,7 @@ router.post("/logout", logoutUser);
 
 // protected routes
 router.post("/follow/:id", protectRoute, followUnfollowUser); //toggle follow/unfollow
-router.post("/update/:id", protectRoute, updateUser);
+router.put("/update/:id", protectRoute, updateUser);
 
 
 export default router;
