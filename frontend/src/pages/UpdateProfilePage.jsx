@@ -31,10 +31,16 @@ const UpdateProfilePage = () => {
   const fileRef = useRef(null);
   const { handleImageChange, imgUrl } = usePreviewImg() //from hooks
 
+  /* loading spinner */
+  const [updating, setUpdating] = useState(false);
+
   const showToast = useShowToast();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (updating) return;
+    setUpdating(true);
 
     try {
       const res = await fetch(`/api/users/update/${user._id}`, {
@@ -59,6 +65,8 @@ const UpdateProfilePage = () => {
       localStorage.setItem("user-threads", JSON.stringify(data));
     } catch (error) {
       showToast('Error', error, 'error');
+    } finally {
+      setUpdating(false);
     }
   }
 
@@ -78,7 +86,7 @@ const UpdateProfilePage = () => {
           p={6}
           my={12}>
           <Heading lineHeight={1.1} fontSize={{ base: '2xl', sm: '3xl' }}>
-            User Profile Edit
+            Update Profile
           </Heading>
           <FormControl id="userName">
             <Stack direction={['column', 'row']} spacing={6}>
@@ -152,6 +160,7 @@ const UpdateProfilePage = () => {
               Cancel
             </Button>
             <Button
+              isLoading={updating}
               type='submit'
               bg={'blue.400'}
               color={'white'}
