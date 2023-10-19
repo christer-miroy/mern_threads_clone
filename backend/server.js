@@ -20,7 +20,7 @@ cloudinary.config({
   });
 
 // middlewares
-app.use(express.json()); //parse JSON data in req.body
+app.use(express.json({limit:"50mb"})); //parse JSON data in req.body max of 50mb
 app.use(express.urlencoded({ extended: true })); //parse form data in the req.body
 app.use(cookieParser()); //get the cookie from req then set the cookie inside response
 

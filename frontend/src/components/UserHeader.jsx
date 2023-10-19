@@ -32,46 +32,44 @@ const UserHeader = ({user}) => {
     }
 
     // handle follow and unfollow
-    const handleFollowUnfollow = async() => {
-        if (!currentUser) {
-            showToast('Error', "Please log in to follow user", 'error');
-            return
-        }
-        if (updating) return;
-        setUpdating(true);
+    const handleFollowUnfollow = async () => {
+		if (!currentUser) {
+			showToast("Error", "Please login to follow", "error");
+			return;
+		}
+		if (updating) return;
 
-        try {
-            const res = await fetch(`/api/users/follow/${user._id}`, {
-                method: "POST",
-                headers: {
-                    "Content-type" : "application/json"
-                },
-            });
+		setUpdating(true);
+		try {
+			const res = await fetch(`/api/users/follow/${user._id}`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+			const data = await res.json();
+			if (data.error) {
+				showToast("Error", data.error, "error");
+				return;
+			}
 
-            const data = await res.json();
-            if (data.error) {
-                showToast('Error', data.error, 'error');
-                return
-            }
+			if (following) {
+				showToast("Success", `Unfollowed ${user.name}`, "success");
+				user.followers.pop(); // simulate removing from followers
+			} else {
+				showToast("Success", `Followed ${user.name}`, "success");
+				user.followers.push(currentUser?._id); // simulate adding to followers
+			}
+			setFollowing(!following);
 
-            if (following) {
-                // remove follower  
-                showToast("Success", `Unfollowed ${user.name}`, "success");
-                user.followers.pop();
-            } else {
-                // add follower
-                showToast("Success", `Followed ${user.name}`, "success");
-                user.followers.push(currentUser._id);
-            }
-            setFollowing(!following);
-            console.log(data);
-        } catch (error) {
-            showToast('Error', error, 'error');
-        } finally {
-            // either success or fail
-            setUpdating(false);
-        }
-    };
+			console.log(data);
+		} catch (error) {
+			showToast("Error", error, "error");
+		} finally {
+			setUpdating(false);
+		}
+	};
+
   return (
     <VStack gap={4} alignItems={"start"}>
         <Flex justifyContent={"space-between"} w={"full"}>
