@@ -167,7 +167,8 @@ const replyToPost = async (req, res) => {
         await post.save();
 
         res.status(200).json({
-            message: "Replied."
+            message: "Reply poosted.",
+            post: reply
         });
     } catch (err) {
         res.status(500).json({
