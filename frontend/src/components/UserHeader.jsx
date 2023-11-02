@@ -12,7 +12,7 @@ const UserHeader = ({user}) => {
     const currentUser = useRecoilValue(userAtom); //logged in user
 
     // check if user is following another user or not
-    const [following, setFollowing] = useState(user.followers.includes(currentUser._id));
+    const [following, setFollowing] = useState(user.followers.includes(currentUser?._id));
     const showToast = useShowToast();
 
     // loading spinner
@@ -115,12 +115,12 @@ const UserHeader = ({user}) => {
         </Flex>
         <Text>{user.bio}</Text>
 
-        {currentUser._id === user._id && (
+        {currentUser?._id === user._id && (
             <Link as={RouterLink} to="/update">
                 <Button size={"sm"}>Update Profile</Button>
             </Link>
         )}
-        {currentUser._id !== user._id && (
+        {currentUser?._id !== user._id && (
             <Button
                 size={"sm"}
                 onClick={handleFollowUnfollow}

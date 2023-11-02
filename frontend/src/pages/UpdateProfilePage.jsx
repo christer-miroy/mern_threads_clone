@@ -15,9 +15,11 @@ import { useRef, useState } from 'react';
 import userAtom from '../atoms/userAtom';
 import usePreviewImg from '../hooks/usePreviewImg';
 import useShowToast from '../hooks/useShowToast';
+import { useNavigate } from 'react-router-dom';
 
 
 const UpdateProfilePage = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userAtom);
   const [input, setInput] = useState({
     name: user.name,
@@ -68,6 +70,11 @@ const UpdateProfilePage = () => {
     } finally {
       setUpdating(false);
     }
+  }
+
+  /* cancel button */
+  const handleCancel = async () => {
+    navigate('/');
   }
 
   return (
@@ -156,7 +163,9 @@ const UpdateProfilePage = () => {
               w="full"
               _hover={{
                 bg: 'red.500',
-              }}>
+              }}
+              onClick={handleCancel}
+            >
               Cancel
             </Button>
             <Button
