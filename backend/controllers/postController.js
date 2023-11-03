@@ -59,10 +59,7 @@ const createPost = async (req,res) => {
         const newPost = new Post({ postedBy, text, img });
 
         await newPost.save();
-        res.status(200).json({
-            message: "Post created successfully.",
-            newPost
-        });
+        res.status(200).json(newPost);
 
     } catch (err) {
         res.status(500).json({
@@ -170,10 +167,7 @@ const replyToPost = async (req, res) => {
 
         await post.save();
 
-        res.status(200).json({
-            message: "Reply poosted.",
-            post: reply
-        });
+        res.status(200).json(reply);
     } catch (err) {
         res.status(500).json({
             error: err.message
